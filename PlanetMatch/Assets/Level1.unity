@@ -184,7 +184,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.5995326
+  orthographic size: 5.9372497
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -246,14 +246,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sprites:
   - {fileID: 21300000, guid: c38bc3039892d2b4880f4e6eda5d91ea, type: 3}
+  - {fileID: 21300000, guid: f4669ac9b0c8ac74d917fdf26e220987, type: 3}
   - {fileID: 21300000, guid: d9faf1d111b91304bb3347db12005cb8, type: 3}
   - {fileID: 21300000, guid: d69210e1839f1bd4cb1c559379d05790, type: 3}
+  - {fileID: 21300000, guid: 9cff321ccb776ba439bff51fe97db96e, type: 3}
   - {fileID: 21300000, guid: 085f82ec726fcca42baf47328b719ead, type: 3}
-  - {fileID: 21300000, guid: 3787ca048b3f47d4caa16fa9439f576c, type: 3}
   - {fileID: 21300000, guid: 2c13a93f7eb152b4597d4c4d0c16d738, type: 3}
   - {fileID: 21300000, guid: e1af01d090cbc1243934284a5cc68e55, type: 3}
-  - {fileID: 21300000, guid: 4db0c4433a89a864ba2e3afe18017c5f, type: 3}
-  - {fileID: 21300000, guid: 976c66a75cde45243b46753a36b1dfa6, type: 3}
+  - {fileID: 21300000, guid: efc53c6e1ee66974b9e8dce321448a04, type: 3}
   TilePrefab: {fileID: 8240428727968202350, guid: 154af5fdd14803244b809285d8208cc1, type: 3}
   GridDimension: 8
   Distance: 1
