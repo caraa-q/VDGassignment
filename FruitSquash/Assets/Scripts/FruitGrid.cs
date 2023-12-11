@@ -185,24 +185,25 @@ public class FruitGrid : MonoBehaviour
 
         if(_takeAction)
         {
-            foreach (Fruit fruitsToRemove in fruitsToRemove)
+            foreach (Fruit fruit in fruitsToRemove)
             {
-                fruitsToRemove.isMatched = false;
+                fruit.isMatched = true;
             }
             
-        RemoveAndRefill(fruitsToRemove);
+            RemoveAndRefill(fruitsToRemove);
 
             if (CheckGrid(false))
             {
                 CheckGrid(true);
             }
+            
         }
         return hasMatched;
     }
 
-    private void RemoveAndRefill(List<Fruit> _fruitsToRemove)
+    private void RemoveAndRefill(List<Fruit> fruitsToRemove)
     {
-        foreach (Fruit fruit in _fruitsToRemove)
+        foreach (Fruit fruit in fruitsToRemove)
         {
             int _xAxis = fruit.xAxis;
             int _yAxis = fruit.yAxis;
@@ -228,7 +229,7 @@ public class FruitGrid : MonoBehaviour
     {
         int yOffset = 1;
 
-        // If inside the board and the cell is null, increment offset
+        // If inside the grid and the cell is null, increment offset
         while (y + yOffset < height && fruitGrid[x, y + yOffset].fruit == null)
         {
             yOffset++;
