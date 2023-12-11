@@ -200,9 +200,9 @@ public class FruitGrid : MonoBehaviour
         return hasMatched;
     }
 
-    private void RemoveAndRefill(List<Fruit> _fruitsToRemove)
+    private void RemoveAndRefill(List<Fruit> fruitsToRemove)
     {
-        foreach (Fruit fruit in _fruitsToRemove)
+        foreach (Fruit fruit in fruitsToRemove)
         {
             int _xAxis = fruit.xAxis;
             int _yAxis = fruit.yAxis;
@@ -261,7 +261,7 @@ public class FruitGrid : MonoBehaviour
         GameObject newFruit = Instantiate(fruitPrefab[randomIndex], new Vector2(x - xSpacing, height - ySpacing), Quaternion.identity);
         
         newFruit.transform.SetParent(fruitParent.transform);
-        newFruit.GetComponent<Fruit>().setValues(x, index);
+        newFruit.GetComponent<Fruit>().SetValues(x, index);
         fruitGrid[x, index] = new Node(true, newFruit);
 
         Vector3 targetPosition = new Vector3(newFruit.transform.position.x, newFruit.transform.position.y - moveTo, newFruit.transform.position.z);
@@ -320,7 +320,7 @@ public class FruitGrid : MonoBehaviour
         }
         else if (_matchedResults.direction == MatchDirection.Vertical || _matchedResults.direction == MatchDirection.LongVertical)
         {
-            foreach (Fruit pot in _matchedResults.connectedFruits.connectedFruits)
+            foreach (Fruit pot in _matchedResults.connectedFruits)
             {
                 List<Fruit> extraConnectedFruits = new ();
 
@@ -346,7 +346,6 @@ public class FruitGrid : MonoBehaviour
         }
         return null;
     }
-  
 
     // Check for connected fruits in different directions from a given fruit
     MatchResult IsConnected(Fruit fruit)
