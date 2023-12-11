@@ -139,7 +139,7 @@ public class FruitGrid : MonoBehaviour
         Debug.Log("Checking Grid");
         bool hasMatched = false;
 
-        List<Fruit> fruitsToRemove = new List<Fruit>();
+        List<Fruit> fruitsToRemove = new();
 
         foreach(Node nodeFruit in fruitGrid)
         {
