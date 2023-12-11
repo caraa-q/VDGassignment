@@ -1,17 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
     public int xAxis;
     public int yAxis;
-    public int isMatched;
+    
     public bool isMoving;
+    public bool isMatched;
+
     public FruitType fruitType;
 
-    private Vector2 currentPosition;
     private Vector2 targetPosition;
+    private Vector2 currentPos;
 
     public Fruit(int x, int y)
     {
@@ -19,13 +20,43 @@ public class Fruit : MonoBehaviour
         yAxis = y;
     }
 
+
     public void SetValues(int x, int y)
     {
         xAxis = x;
         yAxis = y;
     }
 
-    public enum FruitType // Drop down in the inspector instead of having to drag assets 
+    public void MoveToTarget( Vector2 targetPosition)
+    {
+        StartCoroutine(MoveCoroutine(targetPosition));
+    }
+
+    private IEnumerator MoveCoroutine(Vector2 targetPosition)
+    {
+        isMoving = true;
+        float duration = 0.2f;
+
+        Vector2 startPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+
+            transform.position = Vector2.Lerp(startPosition, targetPosition, t);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+        isMoving = false;
+    }
+
+
+    public enum FruitType
     {
         Banana,
         Cherry,
@@ -35,10 +66,5 @@ public class Fruit : MonoBehaviour
         Orange,
         Pear,
         Tomato
-    }
-
-    public bool CheckGrid()
-    {
-        
     }
 }
