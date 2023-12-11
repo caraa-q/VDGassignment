@@ -27,9 +27,9 @@ public class Fruit : MonoBehaviour
         yAxis = y;
     }
 
-    public void MoveToTarget( Vector2 targetPosition)
+    public void MoveToTarget( Vector2 _targetPosition)
     {
-        StartCoroutine(MoveCoroutine(targetPosition));
+        StartCoroutine(MoveCoroutine(_targetPosition));
     }
 
     private IEnumerator MoveCoroutine(Vector2 _targetPosition)
@@ -44,7 +44,7 @@ public class Fruit : MonoBehaviour
         {
             float t = elapsedTime / duration;
 
-            transform.position = Vector2.Lerp(startPosition, _targetPosition, t);
+            transform.position = Vector2.Lerp(startPosition, targetPosition, t);
 
             elapsedTime += Time.deltaTime;
 

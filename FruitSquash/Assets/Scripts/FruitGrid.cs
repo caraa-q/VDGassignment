@@ -109,7 +109,7 @@ public class FruitGrid : MonoBehaviour
         }
         
         // Check if there are initial matches and recreate the grid if needed
-        if (CheckGrid())
+        if (CheckGrid(false))
         {
             Debug.Log("We have matches, let's re-create the grid");
             InitializeGrid();
@@ -200,9 +200,9 @@ public class FruitGrid : MonoBehaviour
         return hasMatched;
     }
 
-    private void RemoveAndRefill(List<Fruit> fruitsToRemove)
+    private void RemoveAndRefill(List<Fruit> _fruitsToRemove)
     {
-        foreach (Fruit fruit in fruitsToRemove)
+        foreach (Fruit fruit in _fruitsToRemove)
         {
             int _xAxis = fruit.xAxis;
             int _yAxis = fruit.yAxis;
