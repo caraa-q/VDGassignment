@@ -286,6 +286,7 @@ MonoBehaviour:
   - {fileID: 3024632691157702577, guid: e569118c4913e7a4190c63be15dffd96, type: 3}
   - {fileID: 3649635226681517576, guid: e17d961c97b640b47841d2fbfd8fbbab, type: 3}
   fruitGridGO: {fileID: 761505941}
+  fruitParent: {fileID: 610930445}
   isProcessingMove: 0
   selectedFruit: {fileID: 0}
   arrayLayout:

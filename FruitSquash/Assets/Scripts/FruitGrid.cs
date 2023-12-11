@@ -185,9 +185,9 @@ public class FruitGrid : MonoBehaviour
 
         if(_takeAction)
         {
-            foreach (Fruit fruit in fruitsToRemove)
+            foreach (Fruit fruitsToRemove in fruitsToRemove)
             {
-                fruit.isMatched = true;
+                fruitsToRemove.isMatched = false;
             }
             
             RemoveAndRefill(fruitsToRemove);
@@ -201,9 +201,9 @@ public class FruitGrid : MonoBehaviour
         return hasMatched;
     }
 
-    private void RemoveAndRefill(List<Fruit> fruitsToRemove)
+    private void RemoveAndRefill(List<Fruit> _fruitsToRemove)
     {
-        foreach (Fruit fruit in fruitsToRemove)
+        foreach (Fruit fruit in _fruitsToRemove)
         {
             int _xAxis = fruit.xAxis;
             int _yAxis = fruit.yAxis;
