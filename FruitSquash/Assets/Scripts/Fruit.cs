@@ -5,7 +5,7 @@ public class Fruit : MonoBehaviour
 {
     public int xAxis;
     public int yAxis;
-    
+
     public bool isMoving;
     public bool isMatched;
 
@@ -32,7 +32,7 @@ public class Fruit : MonoBehaviour
         StartCoroutine(MoveCoroutine(targetPosition));
     }
 
-    private IEnumerator MoveCoroutine(Vector2 targetPosition)
+    private IEnumerator MoveCoroutine(Vector2 _targetPosition)
     {
         isMoving = true;
         float duration = 0.2f;
@@ -44,27 +44,24 @@ public class Fruit : MonoBehaviour
         {
             float t = elapsedTime / duration;
 
-            transform.position = Vector2.Lerp(startPosition, targetPosition, t);
+            transform.position = Vector2.Lerp(startPosition, _targetPosition, t);
 
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
 
-        transform.position = targetPosition;
+        transform.position = _targetPosition;
         isMoving = false;
     }
 
+}
 
-    public enum FruitType
+public enum FruitType
     {
         Banana,
         Cherry,
         Chilli,
         Grape,
         Lemon,
-        Orange,
-        Pear,
-        Tomato
     }
-}
