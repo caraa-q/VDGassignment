@@ -190,7 +190,7 @@ public class FruitGrid : MonoBehaviour
                 fruitsToRemove.isMatched = false;
             }
             
-            RemoveAndRefill(fruitsToRemove);
+        RemoveAndRefill(fruitsToRemove);
 
             if (CheckGrid(false))
             {
@@ -531,7 +531,7 @@ public class FruitGrid : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
 
-        bool hasMatch = CheckGrid();
+        bool hasMatch = CheckGrid(false);
 
         if (!hasMatch)
         {
