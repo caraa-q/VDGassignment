@@ -205,7 +205,7 @@ public class FruitGrid : MonoBehaviour
     {
         foreach (Fruit fruit in _fruitsToRemove)
         {
-            int _xAxis = fruit.xAxis;
+            int _xAxis = fruit.xAxis; 
             int _yAxis = fruit.yAxis;
 
             Destroy(fruit.gameObject);
