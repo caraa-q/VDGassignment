@@ -5,15 +5,15 @@ using UnityEngine;
 public class FruitGrid : MonoBehaviour
 {
     public int width = 6; // Grid width
-    public int height = 8; // Grid height 
-    public float xSpacing;// Grid spacing
+    public int height = 8; // Grid height
+    public float xSpacing; // Grid spacing
     public float ySpacing;
 
-    public GameObject[] fruitPrefab;// Reference to fruit
+    public GameObject[] fruitPrefab; // Reference to fruit
     private Node[,] fruitGrid;
 
-    public GameObject fruitBoardGO;
-    private List<GameObject> fruitToDestroy = new();
+    public GameObject fruitGridGO;
+    private List<GameObject> fruitToDestroy = new List<GameObject>();
 
     [SerializeField]
     private bool isProcessingMove;
@@ -22,7 +22,7 @@ public class FruitGrid : MonoBehaviour
 
     public ArrayLayout arrayLayout;
     public static FruitGrid Instance;
-    
+
     void Awake()
     {
         Instance = this;
@@ -53,8 +53,7 @@ public class FruitGrid : MonoBehaviour
         }
     }
 
-
-    void InitializeBoard()
+    void InitializeGrid()
     {
         DestroyFruit();
         fruitGrid = new Node[width, height];
@@ -82,83 +81,83 @@ public class FruitGrid : MonoBehaviour
                 }
             }
         }
-        
-        if (CheckBoard())
+
+        if (CheckGrid())
         {
-            Debug.Log("We have matches let's re-create the board");
-            InitializeBoard();
+            Debug.Log("We have matches let's re-create the grid");
+            InitializeGrid();
         }
         else
         {
             Debug.Log("There are no matches, it's time to start the game!");
         }
+    }
 
-        private void DestroyFruit()
+    private void DestroyFruit()
+    {
+        if (fruitToDestroy != null)
         {
-            if (fruitToDestroy != null)
-            {
-                foreach (GameObject fruit in fruitToDestroy)
-                    Destroy(fruit);
-                fruitToDestroy.Clear();
-            }
+            foreach (GameObject fruit in fruitToDestroy)
+                Destroy(fruit);
+            fruitToDestroy.Clear();
         }
+    }
 
-        public bool CheckGrid()
+    public bool CheckGrid()
+    {
+        Debug.Log("Checking Grid");
+        bool hasMatched = false;
+
+        List<Fruit> fruitsToRemove = new List<Fruit>();
+
+        for (int x = 0; x < width; x++)
         {
-            Debug.Log("Checking Grid");
-            bool hasMatched = false;
-
-            List<Fruit> FruitsToRemove = new();
-
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
             {
-                for (int y = 0; y < height; y++)
+                // checking if fruit node is usable
+                if (fruitGrid[x, y].isUsable)
                 {
-                    //checking if fruit node is usable
-                    if (fruitGrid[x,y].isUsable)
+                    // then proceed to get fruit class in node
+                    Fruit fruit = fruitGrid[x, y].fruit.GetComponent<Fruit>();
+
+                    // ensure it's not matched
+                    if (!fruit.isMatched)
                     {
-                        //then proceed to get fruit class in node.
-                        Fruit fruit = fruitGrid[x, y].fruit.GetComponent<Fruit>();
+                        // run some matching logic
+                        MatchResult matchedFruits = IsConnected(fruit);
 
-                        //ensure its not matched
-                        if(!fruit.isMatched)
+                        if (matchedFruits.connectedFruits.Count >= 3)
                         {
-                            //run some matching logic
+                            // complex matching...
 
-                            MatchResult matchedFruits = IsConnected(fruit);
+                            fruitsToRemove.AddRange(matchedFruits.connectedFruits);
 
-                            if (matchedFruits.connectedFruits.Count >= 3)
-                            {
-                                //complex matching...
+                            foreach (Fruit pot in matchedFruits.connectedFruits)
+                                pot.isMatched = true;
 
-                                fruitsToRemove.AddRange(matchedFruits.connectedFruits);
-
-                                foreach (Fruit pot in matchedFruits.connectedFruits)
-                                    pot.isMatched = true;
-
-                                hasMatched = true;
-                            }
+                            hasMatched = true;
                         }
                     }
                 }
             }
-
-            return hasMatched;
         }
+
+        return hasMatched;
     }
 
     MatchResult IsConnected(Fruit fruit)
     {
-        List<Fruit> connectedFruits = new();
+        List<Fruit> connectedFruits = new List<Fruit>();
         FruitType fruitType = fruit.fruitType;
 
         connectedFruits.Add(fruit);
 
-        //check right
+        // check right
         CheckDirection(fruit, new Vector2Int(1, 0), connectedFruits);
-        //check left
+        // check left
         CheckDirection(fruit, new Vector2Int(-1, 0), connectedFruits);
-        //have we made a 3 match? (Horizontal Match)
+
+        // have we made a 3 match? (Horizontal Match)
         if (connectedFruits.Count == 3)
         {
             Debug.Log("I have a normal horizontal match, the color of my match is: " + connectedFruits[0].fruitType);
@@ -169,7 +168,7 @@ public class FruitGrid : MonoBehaviour
                 direction = MatchDirection.Horizontal
             };
         }
-        //checking for more than 3 (Long horizontal Match)
+        // checking for more than 3 (Long horizontal Match)
         else if (connectedFruits.Count > 3)
         {
             Debug.Log("I have a Long horizontal match, the color of my match is: " + connectedFruits[0].fruitType);
@@ -180,17 +179,18 @@ public class FruitGrid : MonoBehaviour
                 direction = MatchDirection.LongHorizontal
             };
         }
-        //clear out the connectedfruits
+
+        // clear out the connectedfruits
         connectedFruits.Clear();
-        //readd our initial fruit
+        // readd our initial fruit
         connectedFruits.Add(fruit);
 
-        //check up
+        // check up
         CheckDirection(fruit, new Vector2Int(0, 1), connectedFruits);
-        //check down
-        CheckDirection(fruit, new Vector2Int(0,-1), connectedFruits);
+        // check down
+        CheckDirection(fruit, new Vector2Int(0, -1), connectedFruits);
 
-        //have we made a 3 match? (Vertical Match)
+        // have we made a 3 match? (Vertical Match)
         if (connectedFruits.Count == 3)
         {
             Debug.Log("I have a normal vertical match, the color of my match is: " + connectedFruits[0].fruitType);
@@ -201,7 +201,7 @@ public class FruitGrid : MonoBehaviour
                 direction = MatchDirection.Vertical
             };
         }
-        //checking for more than 3 (Long Vertical Match)
+        // checking for more than 3 (Long Vertical Match)
         else if (connectedFruits.Count > 3)
         {
             Debug.Log("I have a Long vertical match, the color of my match is: " + connectedFruits[0].fruitType);
@@ -211,7 +211,8 @@ public class FruitGrid : MonoBehaviour
                 connectedFruits = connectedFruits,
                 direction = MatchDirection.LongVertical
             };
-        } else
+        }
+        else
         {
             return new MatchResult
             {
@@ -220,22 +221,22 @@ public class FruitGrid : MonoBehaviour
             };
         }
     }
-    
+
     void CheckDirection(Fruit pot, Vector2Int direction, List<Fruit> connectedFruits)
     {
         FruitType fruitType = pot.fruitType;
-        int x = pot.xIndex + direction.x;
-        int y = pot.yIndex + direction.y;
+        int x = pot.xAxis + direction.x;
+        int y = pot.yAxis + direction.y;
 
-        //check that we're within the boundaries of the board
+        // check that we're within the boundaries of the grid
         while (x >= 0 && x < width && y >= 0 && y < height)
         {
-            if (fruitBoard[x,y].isUsable)
+            if (fruitGrid[x, y].isUsable)
             {
-                Fruit neighbourFruit = fruitBoard[x, y].fruit.GetComponent<Fruit>();
+                Fruit neighbourFruit = fruitGrid[x, y].fruit.GetComponent<Fruit>();
 
-                //does our fruit Type Match? it must also not be matched
-                if(!neighbourFruit.isMatched && neighbourFruit.FruitType == fruitType)
+                // does our fruit Type Match? it must also not be matched
+                if (!neighbourFruit.isMatched && neighbourFruit.fruitType == fruitType)
                 {
                     connectedFruits.Add(neighbourFruit);
 
@@ -246,7 +247,7 @@ public class FruitGrid : MonoBehaviour
                 {
                     break;
                 }
-                
+
             }
             else
             {
@@ -266,22 +267,22 @@ public class FruitGrid : MonoBehaviour
 
         if (selectedFruit == null)
         {
-            selectedFruit = _fruit;
+            selectedFruit = fruit;
         }
-        else if (selectedFruit == _fruit)
+        else if (selectedFruit == fruit)
         {
             selectedFruit = null;
         }
-        else if (selectedFruit != _fruit)
+        else if (selectedFruit != fruit)
         {
-            SwapFruit(selectedFruit, _fruit);
+            SwapFruit(selectedFruit, fruit);
             selectedFruit = null;
         }
     }
 
     private void SwapFruit(Fruit _currentFruit, Fruit _targetFruit)
     {
-        if (!IsAdjacent(_currentFruit,_targetFruit))
+        if (!IsAdjacent(_currentFruit, _targetFruit))
         {
             return;
         }
@@ -295,36 +296,36 @@ public class FruitGrid : MonoBehaviour
 
     private void DoSwap(Fruit _currentFruit, Fruit _targetFruit)
     {
-        GameObject temp = fruitBoard[_currentFruit.xIndex, _currentFruit.yIndex].fruit;
+        GameObject temp = fruitGrid[_currentFruit.xAxis, _currentFruit.yAxis].fruit;
 
-        fruitBoard[_currentFruit.xIndex, _currentFruit.yIndex].fruit = fruitBoard[_targetFruit.xIndex, _targetFruit.yIndex].potion;
-        fruitBoard[_targetFruit.xIndex, _targetFruit.yIndex].fruit = temp;
+        fruitGrid[_currentFruit.xAxis, _currentFruit.yAxis].fruit = fruitGrid[_targetFruit.xAxis, _targetFruit.yAxis].fruit;
+        fruitGrid[_targetFruit.xAxis, _targetFruit.yAxis].fruit = temp;
 
-        int tempXIndex = _currentFruit.xIndex;
-        int tempYIndex = _currentFruit.yIndex;
+        int tempxAxis = _currentFruit.xAxis;
+        int tempyAxis = _currentFruit.yAxis;
 
-        _currentFruit.xIndex = _targetFruit.xIndex;
-        _currentFruit.yIndex = _targetFruit.yIndex;
-        _targetFruit.xIndex = tempXIndex;
-        _targetFruit.yIndex = tempYIndex;
+        _currentFruit.xAxis = _targetFruit.xAxis;
+        _currentFruit.yAxis = _targetFruit.yAxis;
+        _targetFruit.xAxis = tempxAxis;
+        _targetFruit.yAxis = tempyAxis;
 
-        //moves current fruit to target fruit (physically on the screen)
-        _currentFruit.MoveToTarget(fruitBoard[_targetFruit.xIndex, _targetFruit.yIndex].fruit.transform.position);
+        // moves current fruit to target fruit (physically on the screen)
+        _currentFruit.MoveToTarget(fruitGrid[_targetFruit.xAxis, _targetFruit.yAxis].fruit.transform.position);
 
-        //moves target fruit to current fruit (physically on the screen)
-        _targetFruit.MoveToTarget(fruitBoard[_currentFruit.xIndex, _currentFruit.yIndex].fruit.transform.position);
+        // moves target fruit to current fruit (physically on the screen)
+        _targetFruit.MoveToTarget(fruitGrid[_currentFruit.xAxis, _currentFruit.yAxis].fruit.transform.position);
     }
 
     private bool IsAdjacent(Fruit _currentFruit, Fruit _targetFruit)
     {
-        return Mathf.Abs(_currentFruit.xIndex - _targetFruit.xIndex) + Mathf.Abs(_currentFruit.yIndex - _targetFruit.yIndex) == 1;
+        return Mathf.Abs(_currentFruit.xAxis - _targetFruit.xAxis) + Mathf.Abs(_currentFruit.yAxis - _targetFruit.yAxis) == 1;
     }
 
     private IEnumerator ProcessMatches(Fruit _currentFruit, Fruit _targetFruit)
     {
         yield return new WaitForSeconds(0.2f);
 
-        bool hasMatch = CheckBoard();
+        bool hasMatch = CheckGrid();
 
         if (!hasMatch)
             DoSwap(_currentFruit, _targetFruit);
