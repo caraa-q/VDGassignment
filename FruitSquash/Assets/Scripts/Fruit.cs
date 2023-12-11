@@ -36,4 +36,9 @@ public class Fruit : MonoBehaviour
         Pear,
         Tomato
     }
+
+    public bool CheckGrid()
+    {
+        
+    }
 }
