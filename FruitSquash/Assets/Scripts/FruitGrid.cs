@@ -139,8 +139,8 @@ public class FruitGrid : MonoBehaviour
     // Check the entire grid for matches
     public bool CheckGrid()
     {
-        // if (GameManager.Instance.isGameEnded)
-        //    return false;
+        if (GameManager.Instance.isGameEnded)
+            return false;
         Debug.Log("Checking Grid");
         bool hasMatched = false;
 
@@ -199,7 +199,7 @@ public class FruitGrid : MonoBehaviour
         }
 
         RemoveAndRefill(fruitsToRemove);
-        // GameManager.Instance.ProcessTurn(fruitsToRemove.Count, _subtractMoves);
+        GameManager.Instance.ProcessTurn(fruitsToRemove.Count, _subtractMoves);
         yield return new WaitForSeconds(0.4f);
 
         if (CheckGrid())
