@@ -5,7 +5,7 @@ using UnityEngine;
 public class FruitGrid : MonoBehaviour
 {
     // Grid dimensions
-    public int width = 8;
+    public int width = 6;
     public int height = 8;
 
     // Spacing between grid elements
@@ -25,7 +25,7 @@ public class FruitGrid : MonoBehaviour
     public GameObject fruitParent;
 
     // List to keep track of fruits that need to be destroyed
-    private List<GameObject> fruitToDestroy = new List<GameObject>();
+    private List<GameObject> fruitToDestroy = new ();
 
     // Flags to control the game flow
     [SerializeField]
@@ -34,9 +34,12 @@ public class FruitGrid : MonoBehaviour
     [SerializeField]
     private Fruit selectedFruit;
 
+    [SerializeField]
+    List<Fruit> fruitsToRemove = new();
+
+
     // Reference to the array layout scriptable object
     public ArrayLayout arrayLayout;
-
     // Singleton instance
     public static FruitGrid Instance;
 
@@ -89,7 +92,7 @@ public class FruitGrid : MonoBehaviour
                 Vector2 position = new Vector2(x - xSpacing, y - ySpacing);
 
                 // Check if the current position should be empty or have a fruit
-                if (y < arrayLayout.rows.Length && x < arrayLayout.rows[y].row.Length && arrayLayout.rows[y].row[x])
+                if (arrayLayout.rows[y].row[x])
                 {
                     fruitGrid[x, y] = new Node(false, null);
                 }
@@ -109,7 +112,7 @@ public class FruitGrid : MonoBehaviour
         }
         
         // Check if there are initial matches and recreate the grid if needed
-        if (CheckGrid(false))
+        if (CheckGrid())
         {
             Debug.Log("We have matches, let's re-create the grid");
             InitializeGrid();
@@ -134,12 +137,14 @@ public class FruitGrid : MonoBehaviour
     }
 
     // Check the entire grid for matches
-    public bool CheckGrid(bool _takeAction)
+    public bool CheckGrid()
     {
+        // if (GameManager.Instance.isGameEnded)
+        //    return false;
         Debug.Log("Checking Grid");
         bool hasMatched = false;
 
-        List<Fruit> fruitsToRemove = new();
+        fruitsToRemove.Clear();
 
         foreach(Node nodeFruit in fruitGrid)
         {
@@ -183,23 +188,26 @@ public class FruitGrid : MonoBehaviour
             }
         }
 
-        if(_takeAction)
-        {
-            foreach (Fruit fruitsToRemove in fruitsToRemove)
-            {
-                fruitsToRemove.isMatched = false;
-            }
-            
-            RemoveAndRefill(fruitsToRemove);
-
-            if (CheckGrid(false))
-            {
-                CheckGrid(true);
-            }
-            
-        }
         return hasMatched;
     }
+    
+    public IEnumerator ProcessTurnOnMatchedGrid(bool _subtractMoves)
+    {
+        foreach (Fruit fruitsToRemove in fruitsToRemove)
+        {
+            fruitsToRemove.isMatched = false;
+        }
+
+        RemoveAndRefill(fruitsToRemove);
+        // GameManager.Instance.ProcessTurn(fruitsToRemove.Count, _subtractMoves);
+        yield return new WaitForSeconds(0.4f);
+
+        if (CheckGrid())
+        {
+            StartCoroutine(ProcessTurnOnMatchedGrid(false));
+        }
+    }
+
 
     private void RemoveAndRefill(List<Fruit> _fruitsToRemove)
     {
@@ -219,7 +227,7 @@ public class FruitGrid : MonoBehaviour
             {
                 if (fruitGrid[x, y].fruit == null)
                 {
-                    RefillFruit(x,y);
+                    RefillFruit(x, y);
                 }
             }
         }
@@ -288,6 +296,8 @@ public class FruitGrid : MonoBehaviour
     //
 
     #endregion  
+
+    #region MatchingLogic
 
     private MatchResult SuperMatch(MatchResult _matchedResults)
     {
@@ -457,17 +467,13 @@ public class FruitGrid : MonoBehaviour
             }
         }
     }
+    #endregion
 
     #region  Swapping Fruits
 
     // Select a fruit for swapping
     public void SelectFruit(Fruit _fruit)
     {
-        if (isProcessingMove)
-        {
-            return;
-        }
-
         if (selectedFruit == null)
         {
             selectedFruit = _fruit;
@@ -521,25 +527,26 @@ public class FruitGrid : MonoBehaviour
         _targetFruit.MoveToTarget(fruitGrid[_currentFruit.xAxis, _currentFruit.yAxis].fruit.transform.position);
     }
 
-    // Check if two fruits are adjacent
-    private bool IsAdjacent(Fruit _currentFruit, Fruit _targetFruit)
-    {
-        return Mathf.Abs(_currentFruit.xAxis - _targetFruit.xAxis) + Mathf.Abs(_currentFruit.yAxis - _targetFruit.yAxis) == 1;
-    }
-
     // Process matches after a swap
     private IEnumerator ProcessMatches(Fruit _currentFruit, Fruit _targetFruit)
     {
         yield return new WaitForSeconds(0.2f);
 
-        bool hasMatch = CheckGrid(false);
-
-        if (!hasMatch)
+        if (CheckGrid())
+        {
+            StartCoroutine(ProcessTurnOnMatchedGrid(true));
+        }
+        else
         {
             DoSwap(_currentFruit, _targetFruit);
         }
-        
         isProcessingMove = false;
+    }
+
+    // Check if two fruits are adjacent
+    private bool IsAdjacent(Fruit _currentFruit, Fruit _targetFruit)
+    {
+        return Mathf.Abs(_currentFruit.xAxis - _targetFruit.xAxis) + Mathf.Abs(_currentFruit.yAxis - _targetFruit.yAxis) == 1;
     }
 
     #endregion

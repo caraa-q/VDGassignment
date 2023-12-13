@@ -100,7 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xAxis: 0
   yAxis: 0
-  isMoving: 0
+  isMoving: 1
+  isMatched: 0
   fruitType: 2
 --- !u!61 &3607909734156037825
 BoxCollider2D:

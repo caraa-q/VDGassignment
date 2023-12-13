@@ -14,20 +14,20 @@ public class Fruit : MonoBehaviour
     private Vector2 targetPosition;
     private Vector2 currentPos;
 
-    public Fruit(int x, int y)
+    public Fruit(int _x, int _y)
     {
-        xAxis = x;
-        yAxis = y;
+        xAxis = _x;
+        yAxis = _y;
     }
 
 
-    public void SetValues(int x, int y)
+    public void SetValues(int _x, int _y)
     {
-        xAxis = x;
-        yAxis = y;
+        xAxis = _x;
+        yAxis = _y;
     }
 
-    public void MoveToTarget( Vector2 _targetPosition)
+    public void MoveToTarget(Vector2 _targetPosition)
     {
         StartCoroutine(MoveCoroutine(_targetPosition));
     }
@@ -44,7 +44,7 @@ public class Fruit : MonoBehaviour
         {
             float t = elapsedTime / duration;
 
-            transform.position = Vector2.Lerp(startPosition, targetPosition, t);
+            transform.position = Vector2.Lerp(startPosition, _targetPosition, t);
 
             elapsedTime += Time.deltaTime;
 

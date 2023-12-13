@@ -275,20 +275,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ddf2ef05039f848b489d6ce365df75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 8
+  width: 6
   height: 8
   xSpacing: 0
   ySpacing: 0
   fruitPrefab:
   - {fileID: 2209335163304775233, guid: 0fd10d2b656c2fe4192a365cbe46d02e, type: 3}
-  - {fileID: 7860875651051171430, guid: 44532021ad490a54290bd7dca0546915, type: 3}
   - {fileID: 1799111697620884789, guid: 5082b2fbce223b14aa6c577f531c3e63, type: 3}
-  - {fileID: 3024632691157702577, guid: e569118c4913e7a4190c63be15dffd96, type: 3}
+  - {fileID: 7860875651051171430, guid: 44532021ad490a54290bd7dca0546915, type: 3}
   - {fileID: 3649635226681517576, guid: e17d961c97b640b47841d2fbfd8fbbab, type: 3}
+  - {fileID: 5981627638294292192, guid: fd2ea4624dd028c4988d95583cba8b5c, type: 3}
   fruitGridGO: {fileID: 761505941}
   fruitParent: {fileID: 610930445}
   isProcessingMove: 0
   selectedFruit: {fileID: 0}
+  fruitsToRemove: []
   arrayLayout:
     rows:
     - row: 000000000000

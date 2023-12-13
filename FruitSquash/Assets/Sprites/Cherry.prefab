@@ -101,6 +101,7 @@ MonoBehaviour:
   xAxis: 0
   yAxis: 0
   isMoving: 0
+  isMatched: 0
   fruitType: 1
 --- !u!61 &2682059441963160048
 BoxCollider2D:
