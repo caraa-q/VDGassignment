@@ -18,6 +18,11 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void Leaderboard()
+    {
+        SceneManager.LoadScene("Leaderboard");
+    }
+
     public void showCredit()
     {
         CreditCanvas.GetComponent<Canvas> ().enabled = true;

@@ -71,6 +71,10 @@ public class GameManager : MonoBehaviour
     //attached to a button to change scene when winning
     public void GameWon()
     {
+        string playerName = "Player"; // You can use the actual player's name
+        int playerScore = numPoints;
+        FindObjectOfType<LeaderBoard>().SetLeaderboardEntry(playerName, playerScore);
+        
         SceneManager.LoadScene(0);
     }
 
