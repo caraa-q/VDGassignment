@@ -5,8 +5,8 @@ using UnityEngine;
 public class FruitGrid : MonoBehaviour
 {
     // Grid dimensions
-    public int width = 10;
-    public int height = 10;
+    public int width = 6;
+    public int height = 8;
 
     // Spacing between grid elements
     public float xSpacing;
@@ -36,6 +36,13 @@ public class FruitGrid : MonoBehaviour
 
     [SerializeField]
     List<Fruit> fruitsToRemove = new();
+
+    // Audio source for match sound
+    public AudioSource matchAudioSource;
+    
+    // Sound effect for match
+    public AudioClip matchSound;
+
 
 
     // Reference to the array layout scriptable object
@@ -193,9 +200,9 @@ public class FruitGrid : MonoBehaviour
     
     public IEnumerator ProcessTurnOnMatchedGrid(bool _subtractMoves)
     {
-        foreach (Fruit fruitsToRemove in fruitsToRemove)
+        foreach (Fruit fruitToRemove in fruitsToRemove)
         {
-            fruitsToRemove.isMatched = false;
+            fruitToRemove.isMatched = false;
         }
 
         RemoveAndRefill(fruitsToRemove);
@@ -204,6 +211,12 @@ public class FruitGrid : MonoBehaviour
 
         if (CheckGrid())
         {
+            // Play match sound here
+            if (matchAudioSource != null && matchSound != null)
+            {
+                matchAudioSource.PlayOneShot(matchSound);
+            }
+
             StartCoroutine(ProcessTurnOnMatchedGrid(false));
         }
     }

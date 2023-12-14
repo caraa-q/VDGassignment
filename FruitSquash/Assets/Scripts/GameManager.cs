@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         string playerName = "Player"; // You can use the actual player's name
         int playerScore = numPoints;
         FindObjectOfType<LeaderBoard>().SetLeaderboardEntry(playerName, playerScore);
-        
+
         SceneManager.LoadScene(0);
     }
 
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void loadGame()
+    public void LoadGame()
     {
         SceneManager.LoadScene("Level1");
     }

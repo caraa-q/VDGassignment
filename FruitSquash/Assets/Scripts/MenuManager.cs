@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     public Canvas CreditCanvas;
+    public Canvas HowToPlay;
 
     public void loadGame()
     {
@@ -23,13 +24,23 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Leaderboard");
     }
 
-    public void showCredit()
+    public void ShowCredit()
     {
-        CreditCanvas.GetComponent<Canvas> ().enabled = true;
-    }
-    public void hideCredit()
-    {
-        CreditCanvas.GetComponent<Canvas> ().enabled = false;
+        CreditCanvas.GetComponent<Canvas>().enabled = true;
     }
 
+    public void HideCredit()
+    {
+        CreditCanvas.GetComponent<Canvas>().enabled = false;
+    }
+
+    public void ShowHowToPlay()
+    {
+        HowToPlay.GetComponent<Canvas>().enabled = true;
+    }
+
+    public void HideHowToPlay()
+    {
+        HowToPlay.GetComponent<Canvas>().enabled = false;
+    }
 }
