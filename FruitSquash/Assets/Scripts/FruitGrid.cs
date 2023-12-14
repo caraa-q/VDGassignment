@@ -5,8 +5,8 @@ using UnityEngine;
 public class FruitGrid : MonoBehaviour
 {
     // Grid dimensions
-    public int width = 6;
-    public int height = 8;
+    public int width = 10;
+    public int height = 10;
 
     // Spacing between grid elements
     public float xSpacing;
