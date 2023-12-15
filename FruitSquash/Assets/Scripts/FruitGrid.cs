@@ -43,10 +43,9 @@ public class FruitGrid : MonoBehaviour
     // Sound effect for match
     public AudioClip matchSound;
 
-
-
     // Reference to the array layout scriptable object
     public ArrayLayout arrayLayout;
+
     // Singleton instance
     public static FruitGrid Instance;
 

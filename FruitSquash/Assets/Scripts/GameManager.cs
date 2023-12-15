@@ -8,17 +8,17 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance; // static reference
 
-    public GameObject backgroundPanel; // grey background 
+    public GameObject backgroundPanel; // background 
     public GameObject winPanel;
     public GameObject losePanel;
 
     public int mainGoal; // the amount of points you need to get to to win.
     public int numMoves; //the number of turns you can take
-    public int numPoints; // the current points you have earned.
+    public int score; // the current points you have earned.
 
     public bool isGameEnded;
 
-    public TMP_Text numPointsTxt;
+    public TMP_Text scoreTxt;
     public TMP_Text numMovesTxt;
     public TMP_Text mainGoalTxt;
 
@@ -36,18 +36,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        numPointsTxt.text = "Points: " + numPoints.ToString();
+        scoreTxt.text = "Points: " + score.ToString();
         numMovesTxt.text = "Moves: " + numMoves.ToString();
         mainGoalTxt.text = "Goal: " + mainGoal.ToString();
     }
 
     public void ProcessTurn(int _gainPoints, bool _subtractMoves)
     {
-        numPoints += _gainPoints;
+        score += _gainPoints;
         if (_subtractMoves)
             numMoves--;
 
-        if (numPoints >= mainGoal)
+        if (score >= mainGoal)
         {
             //you've won the game
             isGameEnded = true;
@@ -71,10 +71,6 @@ public class GameManager : MonoBehaviour
     //attached to a button to change scene when winning
     public void GameWon()
     {
-        string playerName = "Player"; // You can use the actual player's name
-        int playerScore = numPoints;
-        FindObjectOfType<LeaderBoard>().SetLeaderboardEntry(playerName, playerScore);
-
         SceneManager.LoadScene(0);
     }
 
