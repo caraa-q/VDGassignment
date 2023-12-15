@@ -22,6 +22,10 @@ public class GameManager : MonoBehaviour
     public TMP_Text numMovesTxt;
     public TMP_Text mainGoalTxt;
 
+    public LeaderBoard leaderboard;
+    public Canvas LeaderBoardCanvas;
+
+
     private void Awake()
     {
         Instance = this;
@@ -55,6 +59,9 @@ public class GameManager : MonoBehaviour
             backgroundPanel.SetActive(true);
             winPanel.SetActive(true);
             FruitGrid.Instance.fruitParent.SetActive(false);
+
+            // Submit the score to the LootLocker leaderboard
+            StartCoroutine(LeaderBoard.Instance.SubmitScore(score));
             return;
         }
         if (numMoves == 0)
@@ -64,6 +71,9 @@ public class GameManager : MonoBehaviour
             backgroundPanel.SetActive(true);
             losePanel.SetActive(true);
             FruitGrid.Instance.fruitParent.SetActive(false);
+
+            // Submit the score to the LootLocker leaderboard
+            StartCoroutine(LeaderBoard.Instance.SubmitScore(score));
             return;
         }
     }
@@ -88,5 +98,15 @@ public class GameManager : MonoBehaviour
      public void Menu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ShowLeaderboard()
+    {
+        LeaderBoardCanvas.GetComponent<Canvas>().enabled = true;
+    }
+
+    public void HideLeaderboard()
+    {
+        LeaderBoardCanvas.GetComponent<Canvas>().enabled = false;
     }
 }

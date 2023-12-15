@@ -6,9 +6,33 @@ using LootLocker.Requests;
 
 public class LeaderBoardManager : MonoBehaviour
 {
+    public LeaderBoard leaderboard;
+    public TMP_InputField playerNameInputField;
+
     void Start()
     { 
-        StartCoroutine(LogIn());
+        StartCoroutine(SetUp());
+    }
+
+    public void SetPlayerName()
+    {
+        LootLockerSDKManager.SetPlayerName(playerNameInputField.text, (response) => 
+        {
+            if(response.success)
+            {
+                Debug.Log("Player name set");
+            }
+            else
+            {
+                //
+            }
+        });
+    }
+
+    IEnumerator SetUp()
+    {
+        yield return LogIn();
+        yield return leaderboard.GetTopHighScore();
     }
     
     IEnumerator LogIn()

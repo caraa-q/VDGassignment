@@ -36,9 +36,6 @@ public class FruitGrid : MonoBehaviour
 
     [SerializeField]
     List<Fruit> fruitsToRemove = new();
-
-    // Audio source for match sound
-    public AudioSource matchAudioSource;
     
     // Sound effect for match
     public AudioClip matchSound;
@@ -211,11 +208,7 @@ public class FruitGrid : MonoBehaviour
         if (CheckGrid())
         {
             // Play match sound here
-            if (matchAudioSource != null && matchSound != null)
-            {
-                matchAudioSource.PlayOneShot(matchSound);
-            }
-
+            AudioSource.PlayClipAtPoint(matchSound, transform.position);
             StartCoroutine(ProcessTurnOnMatchedGrid(false));
         }
     }

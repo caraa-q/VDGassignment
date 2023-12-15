@@ -8,7 +8,7 @@ public class MenuManager : MonoBehaviour
 {
     public Canvas CreditCanvas;
     public Canvas HowToPlay;
-
+    
     public void loadGame()
     {
         SceneManager.LoadScene("Level1");
@@ -17,11 +17,6 @@ public class MenuManager : MonoBehaviour
     public void Menu()
     {
         SceneManager.LoadScene("MainMenu");
-    }
-
-    public void Leaderboard()
-    {
-        SceneManager.LoadScene("Leaderboard");
     }
 
     public void ShowCredit()
